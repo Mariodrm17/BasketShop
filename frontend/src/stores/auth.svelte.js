@@ -16,9 +16,9 @@ function parseJwt(token) {
 }
 
 function createAuthStore() {
-  // Persistencia: intentar restaurar desde sessionStorage
-  const savedToken = sessionStorage.getItem('jwt_token')
-  const savedUser = sessionStorage.getItem('jwt_user')
+  // Persistencia: intentar restaurar desde localStorage
+  const savedToken = localStorage.getItem('jwt_token')
+  const savedUser = localStorage.getItem('jwt_user')
 
   let token = $state(savedToken || null)
   let user = $state(savedUser ? JSON.parse(savedUser) : null)
@@ -31,16 +31,16 @@ function createAuthStore() {
     token = newToken
     const payload = parseJwt(newToken)
     user = payload
-    // Persistencia en sessionStorage
-    sessionStorage.setItem('jwt_token', newToken)
-    sessionStorage.setItem('jwt_user', JSON.stringify(payload))
+    // Persistencia en localStorage
+    localStorage.setItem('jwt_token', newToken)
+    localStorage.setItem('jwt_user', JSON.stringify(payload))
   }
 
   function clearSession() {
     token = null
     user = null
-    sessionStorage.removeItem('jwt_token')
-    sessionStorage.removeItem('jwt_user')
+    localStorage.removeItem('jwt_token')
+    localStorage.removeItem('jwt_user')
   }
 
   return {
