@@ -4,6 +4,7 @@
   import { toast } from '../stores/toast.svelte.js'
   import ProductCard from '../components/ProductCard.svelte'
   import ProductModal from '../components/ProductModal.svelte'
+  import ProductViewModal from '../components/ProductViewModal.svelte'
   import ConfirmDialog from '../components/ConfirmDialog.svelte'
 
   // Estado
@@ -11,6 +12,7 @@
   let loading = $state(false)
   let search = $state('')
   let showModal = $state(false)
+  let viewingProduct = $state(null)
   let editingProduct = $state(null)
   let deletingProduct = $state(null)
   let deleting = $state(false)
@@ -54,6 +56,10 @@
   function openEdit(producto) {
     editingProduct = producto
     showModal = true
+  }
+
+  function openView(producto) {
+    viewingProduct = producto
   }
 
   function openDelete(producto) {
@@ -152,6 +158,7 @@
           {producto}
           onEdit={openEdit}
           onDelete={openDelete}
+          onView={openView}
         />
       {/each}
     </div>
@@ -159,6 +166,13 @@
 </div>
 
 <!-- Modales -->
+{#if viewingProduct}
+  <ProductViewModal
+    producto={viewingProduct}
+    onClose={() => viewingProduct = null}
+  />
+{/if}
+
 {#if showModal}
   <ProductModal
     producto={editingProduct}

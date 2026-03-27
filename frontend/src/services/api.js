@@ -41,6 +41,7 @@ export const createProducto = (data, token) => {
   fd.append('nombre', data.nombre)
   fd.append('precio', data.precio)
   if (data.imagen) fd.append('imagen', data.imagen)
+  if (data.imagenUrl) fd.append('imagenUrl', data.imagenUrl)
   return requestFormData('POST', '/productos', fd, token)
 }
 
@@ -62,3 +63,13 @@ export const updateUser = (id, data, token) =>
 
 export const deleteUser = (id, token) =>
   request('DELETE', `/users/${id}`, null, token)
+
+// Carrito
+export const getCart = (token) =>
+  request('GET', '/cart', null, token)
+
+export const addToCart = (productId, token) =>
+  request('POST', '/cart/add', { productId }, token)
+
+export const removeFromCart = (productId, token) =>
+  request('DELETE', `/cart/${productId}`, null, token)

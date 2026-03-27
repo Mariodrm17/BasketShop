@@ -1,10 +1,11 @@
 <script>
-  import { login } from '../services/api.js'
+  import { login, register } from '../services/api.js'
   import { auth } from '../stores/auth.svelte.js'
   import { toast } from '../stores/toast.svelte.js'
 
   let { onLogin } = $props()
 
+  let isLogin = $state(true)
   let username = $state('')
   let password = $state('')
   let loading = $state(false)
@@ -18,10 +19,18 @@
     loading = true
     error = ''
     try {
-      const data = await login(username, password)
-      auth.setSession(data.token)
-      toast.success(`Bienvenido, ${username}`)
-      onLogin?.()
+      if (isLogin) {
+        const data = await login(username, password)
+        auth.setSession(data.token)
+        toast.success(`Bienvenido, ${username}`)
+        onLogin?.()
+      } else {
+        await register(username, password)
+        const data = await login(username, password)
+        auth.setSession(data.token)
+        toast.success(`Registro exitoso. Bienvenido, ${username}`)
+        onLogin?.()
+      }
     } catch (err) {
       error = err.message
     } finally {
@@ -43,8 +52,13 @@
     </div>
 
     <div class="login-card__header">
-      <h1 class="login-card__title">Accede a tu cuenta</h1>
-      <p class="login-card__sub">Sistema de gestión de productos</p>
+      <h1 class="login-card__title">{isLogin ? 'Accede a tu cuenta' : 'Crear cuenta'}</h1>
+      <p class="login-card__sub">{isLogin ? 'Sistema de gestión de productos' : 'Únete a nuestro sistema de gestión'}</p>
+    </div>
+
+    <div class="login-tabs">
+      <button class="login-tab {isLogin ? 'active' : ''}" onclick={() => { isLogin = true; error = ''; }}>Iniciar Sesión</button>
+      <button class="login-tab {!isLogin ? 'active' : ''}" onclick={() => { isLogin = false; error = ''; }}>Registrarse</button>
     </div>
 
     <form class="login-form" onsubmit={(e) => { e.preventDefault(); handleSubmit() }}>
@@ -82,9 +96,9 @@
 
       <button type="submit" class="btn-login" disabled={loading}>
         {#if loading}
-          <span class="spinner"></span> Verificando...
+          <span class="spinner"></span> {isLogin ? 'Verificando...' : 'Registrando...'}
         {:else}
-          Iniciar sesión →
+          {isLogin ? 'Iniciar sesión →' : 'Crear cuenta →'}
         {/if}
       </button>
     </form>
@@ -183,7 +197,41 @@
   .brand-name span { color: var(--accent); }
 
   .login-card__header {
+    margin-bottom: 1.5rem;
+  }
+
+  .login-tabs {
+    display: flex;
+    gap: 0.5rem;
     margin-bottom: 2rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.25rem;
+  }
+
+  .login-tab {
+    flex: 1;
+    padding: 0.6rem;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .login-tab:hover {
+    color: var(--text-primary);
+  }
+
+  .login-tab.active {
+    background: var(--surface);
+    color: var(--text-primary);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
   }
 
   .login-card__title {

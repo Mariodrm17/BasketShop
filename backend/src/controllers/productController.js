@@ -14,8 +14,8 @@ class ProductController {
     try {
       if (req.user.role !== "admin") return res.status(403).json({ error: "Solo admin" });
       
-      const { nombre, precio } = req.body;
-      const imagen = req.file ? req.file.filename : null;
+      const { nombre, precio, imagenUrl } = req.body;
+      const imagen = req.file ? req.file.filename : (imagenUrl || null);
       
       const product = await ProductService.createProduct({ nombre, precio, imagen });
       res.status(201).json(product);

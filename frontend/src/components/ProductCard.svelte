@@ -1,12 +1,12 @@
 <script>
   import { auth } from '../stores/auth.svelte.js'
 
-  let { producto, onEdit, onDelete } = $props()
+  let { producto, onEdit, onDelete, onView } = $props()
 
   const API_BASE = ''
   const imgSrc = $derived(
     producto.imagen
-      ? `${API_BASE}/uploads/${producto.imagen}`
+      ? (producto.imagen.startsWith('http') ? producto.imagen : `${API_BASE}/uploads/${producto.imagen}`)
       : null
   )
 
@@ -15,7 +15,9 @@
 </script>
 
 <article class="card">
-  <div class="card__media">
+  <!-- svelte-ignore a11y_no_static_element_interactions -->
+  <!-- svelte-ignore a11y_click_events_have_key_events -->
+  <div class="card__media" onclick={() => onView?.(producto)} style="cursor: pointer;">
     {#if imgSrc}
       <img src={imgSrc} alt={producto.nombre} class="card__img" />
     {:else}
@@ -29,7 +31,9 @@
   </div>
 
   <div class="card__body">
-    <h3 class="card__name">{producto.nombre}</h3>
+    <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
+    <h3 class="card__name" onclick={() => onView?.(producto)} style="cursor: pointer;" title="Ver detalles">{producto.nombre}</h3>
     <div class="card__price">
       <span class="price__value">{Number(producto.precio).toFixed(2)}</span>
       <span class="price__currency">EUR</span>

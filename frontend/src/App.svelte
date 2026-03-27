@@ -7,6 +7,7 @@
   import Productos from './pages/Productos.svelte'
   import Usuarios from './pages/Usuarios.svelte'
   import Perfil from './pages/Perfil.svelte'
+  import Carrito from './pages/Carrito.svelte'
 
   // Navegación SPA
   let currentPage = $state('productos')
@@ -47,6 +48,8 @@
         <Usuarios />
       {:else if currentPage === 'perfil'}
         <Perfil />
+      {:else if currentPage === 'carrito'}
+        <Carrito />
       {:else}
         <Productos />
       {/if}
@@ -60,6 +63,14 @@
       >
         <span class="tab-item__icon">⬡</span>
         <span class="tab-item__label">Productos</span>
+      </button>
+
+      <button
+        class="tab-item {currentPage === 'carrito' ? 'tab-item--active' : ''}"
+        onclick={() => currentPage = 'carrito'}
+      >
+        <span class="tab-item__icon">🛒</span>
+        <span class="tab-item__label">Cart</span>
       </button>
 
       {#if auth.isAdmin}

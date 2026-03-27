@@ -11,6 +11,7 @@
   let nombre = $state(producto?.nombre ?? '')
   let precio = $state(producto?.precio ?? '')
   let imagenFile = $state(null)
+  let imagenUrl = $state(isEditing && producto?.imagen?.startsWith('http') ? producto.imagen : '')
   let loading = $state(false)
   let errors = $state({})
 
@@ -27,10 +28,12 @@
     loading = true
     try {
       if (isEditing) {
-        await updateProducto(producto._id, { nombre: nombre.trim(), precio: Number(precio) }, auth.token)
+        const payload = { nombre: nombre.trim(), precio: Number(precio) }
+        if (imagenUrl) payload.imagen = imagenUrl
+        await updateProducto(producto._id, payload, auth.token)
         toast.success('Producto actualizado')
       } else {
-        await createProducto({ nombre: nombre.trim(), precio: Number(precio), imagen: imagenFile }, auth.token)
+        await createProducto({ nombre: nombre.trim(), precio: Number(precio), imagen: imagenFile, imagenUrl }, auth.token)
         toast.success('Producto creado')
       }
       onSaved?.()
@@ -95,16 +98,28 @@
         {/if}
       </div>
 
+      <div class="field">
+        <label class="field__label" for="imagenUrl">URL de la Imagen (opcional)</label>
+        <input
+          id="imagenUrl"
+          class="field__input"
+          type="url"
+          placeholder="https://ejemplo.com/foto.jpg"
+          bind:value={imagenUrl}
+          disabled={loading || !!imagenFile}
+        />
+      </div>
+
       {#if !isEditing}
         <div class="field">
-          <label class="field__label" for="imagen">Imagen (opcional)</label>
+          <label class="field__label" for="imagen">O sube un archivo local</label>
           <input
             id="imagen"
             class="field__input field__input--file"
             type="file"
             accept="image/*"
             onchange={handleFile}
-            disabled={loading}
+            disabled={loading || !!imagenUrl}
           />
           {#if imagenFile}
             <span class="field__hint">📎 {imagenFile.name}</span>

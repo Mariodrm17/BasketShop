@@ -29,6 +29,13 @@
       Productos
     </button>
 
+    <button
+      class="nav-link {currentPage === 'carrito' ? 'nav-link--active' : ''}"
+      onclick={() => navigate('carrito')}
+    >
+      Carrito 🛒
+    </button>
+
     {#if auth.isAdmin}
       <button
         class="nav-link {currentPage === 'usuarios' ? 'nav-link--active' : ''}"
