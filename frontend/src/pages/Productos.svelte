@@ -24,6 +24,18 @@
     )
   )
 
+  // Agrupar por categoría
+  const categoriesMap = $derived(
+    filtered.reduce((acc, p) => {
+      const cat = p.categoria || 'Otros'
+      if (!acc[cat]) acc[cat] = []
+      acc[cat].push(p)
+      return acc
+    }, {})
+  )
+
+  const categoryKeys = $derived(Object.keys(categoriesMap).sort())
+
   const stats = $derived({
     total: productos.length,
     activos: productos.filter(p => p.precio > 0).length,
@@ -152,14 +164,24 @@
       {/if}
     </div>
   {:else}
-    <div class="products-grid">
-      {#each filtered as producto (producto._id)}
-        <ProductCard
-          {producto}
-          onEdit={openEdit}
-          onDelete={openDelete}
-          onView={openView}
-        />
+    <div class="store-sections">
+      {#each categoryKeys as cat}
+        <section class="store-category">
+          <div class="category-header">
+            <h2 class="category-title">{cat}</h2>
+            <div class="category-line"></div>
+          </div>
+          <div class="products-grid">
+            {#each categoriesMap[cat] as producto (producto._id)}
+              <ProductCard
+                {producto}
+                onEdit={openEdit}
+                onDelete={openDelete}
+                onView={openView}
+              />
+            {/each}
+          </div>
+        </section>
       {/each}
     </div>
   {/if}
@@ -329,6 +351,35 @@
   }
 
   .btn-ghost:hover { color: var(--text-primary); border-color: var(--border-hover); }
+
+  /* Sections & Categories */
+  .store-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .category-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .category-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.05em;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .category-line {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+    opacity: 0.5;
+  }
 
   /* Grid */
   .products-grid {

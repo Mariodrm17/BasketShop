@@ -25,6 +25,10 @@ services:
       - MONGO_URI=mongodb://mongodb:27017/productos
       - JWT_SECRET=mi_secreto_super_seguro
       - REDIS_URL=redis://redis:6379
+    command: sh -c "npm run seed && npm run dev"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
     depends_on:
       - mongodb
       - redis
@@ -36,6 +40,9 @@ services:
       - "5173:5173"
     environment:
       - BACKEND_URL=http://backend:3000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
     depends_on:
       - backend
 

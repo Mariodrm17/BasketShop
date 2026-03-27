@@ -160,7 +160,7 @@
   }
   .btn-buy:hover:not(:disabled) {
     background: var(--accent-hover); transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(139,92,246,0.4);
+    box-shadow: 0 10px 30px rgba(255,87,34,0.4);
   }
   .btn-buy:disabled { background: var(--surface-2); border: 1px solid var(--border); color: var(--text-faint); cursor: not-allowed; }
 

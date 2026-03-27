@@ -65,7 +65,7 @@
   .card:hover {
     transform: translateY(-4px);
     border-color: var(--border-hover);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(139,92,246,0.12);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,87,34,0.12);
   }
 
   .card__media {
@@ -92,7 +92,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(99,102,241,0.05));
+    background: linear-gradient(135deg, rgba(255,87,34,0.08), rgba(230,74,25,0.05));
   }
 
   .card__placeholder-icon {
@@ -189,14 +189,14 @@
   }
 
   .btn-action--edit {
-    background: rgba(99,102,241,0.12);
+    background: rgba(230,74,25,0.12);
     color: #a5b4fc;
-    border-color: rgba(99,102,241,0.25);
+    border-color: rgba(230,74,25,0.25);
   }
 
   .btn-action--edit:hover {
-    background: rgba(99,102,241,0.22);
-    border-color: rgba(99,102,241,0.45);
+    background: rgba(230,74,25,0.22);
+    border-color: rgba(230,74,25,0.45);
   }
 
   .btn-action--delete {

@@ -10,6 +10,7 @@
   // Estado del formulario con $state
   let nombre = $state(producto?.nombre ?? '')
   let precio = $state(producto?.precio ?? '')
+  let categoria = $state(producto?.categoria ?? 'Otros')
   let imagenFile = $state(null)
   let imagenUrl = $state(isEditing && producto?.imagen?.startsWith('http') ? producto.imagen : '')
   let loading = $state(false)
@@ -19,6 +20,7 @@
     const e = {}
     if (!nombre.trim()) e.nombre = 'El nombre es obligatorio'
     if (!precio || isNaN(precio) || Number(precio) < 0) e.precio = 'Precio inválido'
+    if (!categoria) e.categoria = 'La categoría es obligatoria'
     errors = e
     return Object.keys(e).length === 0
   }
@@ -28,12 +30,12 @@
     loading = true
     try {
       if (isEditing) {
-        const payload = { nombre: nombre.trim(), precio: Number(precio) }
+        const payload = { nombre: nombre.trim(), precio: Number(precio), categoria }
         if (imagenUrl) payload.imagen = imagenUrl
         await updateProducto(producto._id, payload, auth.token)
         toast.success('Producto actualizado')
       } else {
-        await createProducto({ nombre: nombre.trim(), precio: Number(precio), imagen: imagenFile, imagenUrl }, auth.token)
+        await createProducto({ nombre: nombre.trim(), precio: Number(precio), categoria, imagen: imagenFile, imagenUrl }, auth.token)
         toast.success('Producto creado')
       }
       onSaved?.()
@@ -95,6 +97,25 @@
         />
         {#if errors.precio}
           <span class="field__error">{errors.precio}</span>
+        {/if}
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="categoria">Categoría</label>
+        <select
+          id="categoria"
+          class="field__input {errors.categoria ? 'field__input--error' : ''}"
+          bind:value={categoria}
+          disabled={loading}
+        >
+          <option value="Zapatillas">Zapatillas</option>
+          <option value="Ropa">Ropa</option>
+          <option value="Accesorios">Accesorios</option>
+          <option value="Balones">Balones</option>
+          <option value="Otros">Otros</option>
+        </select>
+        {#if errors.categoria}
+          <span class="field__error">{errors.categoria}</span>
         {/if}
       </div>
 
@@ -238,7 +259,7 @@
 
   .field__input:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(139,92,246,0.15);
+    box-shadow: 0 0 0 3px rgba(255,87,34,0.15);
   }
 
   .field__input--error {
@@ -251,8 +272,8 @@
   }
 
   .field__input--file::file-selector-button {
-    background: rgba(139,92,246,0.15);
-    border: 1px solid rgba(139,92,246,0.3);
+    background: rgba(255,87,34,0.15);
+    border: 1px solid rgba(255,87,34,0.3);
     color: var(--accent);
     padding: 0.3rem 0.8rem;
     border-radius: 5px;
@@ -320,7 +341,7 @@
 
   .btn-save:hover:not(:disabled) {
     background: var(--accent-hover);
-    box-shadow: 0 8px 25px rgba(139,92,246,0.4);
+    box-shadow: 0 8px 25px rgba(255,87,34,0.4);
   }
 
   .btn-save:disabled, .btn-cancel:disabled {

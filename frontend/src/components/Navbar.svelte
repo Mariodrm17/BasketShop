@@ -17,8 +17,8 @@
 
 <nav class="navbar">
   <div class="navbar__brand" onclick={() => navigate('productos')}>
-    <span class="navbar__logo">⬡</span>
-    <span class="navbar__name">PROD<span>OS</span></span>
+    <span class="navbar__logo">🏀</span>
+    <span class="navbar__name">HOOP<span>STORE</span></span>
   </div>
 
   <div class="navbar__links">

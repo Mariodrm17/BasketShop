@@ -115,9 +115,9 @@
     --text-muted:   #8b8b9e;
     --text-faint:   #4a4a5a;
 
-    /* Accent violeta vibrante */
-    --accent:       #8b5cf6;
-    --accent-hover: #7c3aed;
+    /* Accent Naranja Basketball */
+    --accent:       #FF5722;
+    --accent-hover: #E64A19;
 
     /* Estados */
     --success:  #10b981;
@@ -145,10 +145,10 @@
     color: var(--text-primary);
     min-height: 100vh;
     font-family: 'DM Sans', sans-serif;
-    /* Patrón de puntos ultra sutil como en el trabajo anterior */
+    /* Patrón de puntos ultra sutil tipo cancha court */
     background-image:
-      radial-gradient(circle at 20% 20%, rgba(139,92,246,0.04) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(99,102,241,0.03) 0%, transparent 50%);
+      radial-gradient(circle at 20% 20%, rgba(255,87,34,0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(255,87,34,0.03) 0%, transparent 50%);
   }
 
   :global(input), :global(select), :global(textarea) {
